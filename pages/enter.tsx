@@ -35,13 +35,14 @@ export default function Enter() {
 					</div>
 				</div>
 				<form className="flex flex-col mt-8">
-					<label className="text-sm font-medium text-gray-700">
+					<label htmlFor="input" className="text-sm font-medium text-gray-700">
 						{method === "email" ? "이메일 주소" : null}
 						{method === "phone" ? "휴대폰 번호" : null}
 					</label>
 					<div className="mt-2">
 						{method === "email" ? (
 							<input
+								id="input"
 								className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
 								type="email"
 								required
@@ -53,6 +54,7 @@ export default function Enter() {
 									+82
 								</span>
 								<input
+									id="input"
 									className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md rounded-l-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
 									type="number"
 									required
