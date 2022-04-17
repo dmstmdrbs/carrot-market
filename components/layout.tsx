@@ -19,7 +19,7 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
 			<div
 				className={cls(
 					!canGoBack ? "justify-center" : "",
-					"bg-white w-full max-w-xl text-lg px-10 font-medium py-3 fixed text-gray-800 border-b top-0  flex items-center"
+					"bg-white w-full max-w-xl h-[54px] text-lg px-10 font-medium py-3 fixed text-gray-800 border-b top-0  flex items-center"
 				)}
 			>
 				{canGoBack ? (
