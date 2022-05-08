@@ -1,14 +1,42 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "../components/button/button";
 import Input from "../components/input/input";
 
 function cls(...classnames: string[]) {
 	return classnames.join(" ");
 }
+
+interface EnterForm {
+	email?: string;
+	phone?: string;
+}
 export default function Enter() {
+	const [submitting, setSubmitting] = useState(false);
+	const { register, reset, handleSubmit } = useForm<EnterForm>();
 	const [method, setMethod] = useState<"email" | "phone">("email");
-	const onEmailClick = () => setMethod("email");
-	const onPhoneClick = () => setMethod("phone");
+
+	const onEmailClick = () => {
+		reset();
+		setMethod("email");
+	};
+	const onPhoneClick = () => {
+		reset();
+		setMethod("phone");
+	};
+
+	const onValid = (data: EnterForm) => {
+		setSubmitting(true);
+		fetch("/api/users/enter", {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}).then(() => {
+			setSubmitting(false);
+		});
+	};
 	return (
 		<div className="mt-16 px-4">
 			<h3 className="text-3xl font-bold text-center">캐럿마켓 입장</h3>
@@ -36,11 +64,28 @@ export default function Enter() {
 						</button>
 					</div>
 				</div>
-				<form className="flex flex-col mt-8 space-y-4">
-					{method === "email" ? <Input name="email" label="Email address" type="email" required /> : null}
-					{method === "phone" ? <Input name="phone" label="Phone number" type="number" kind="phone" required /> : null}
-					{method === "email" ? <Button text={"Get login link"} /> : null}
-					{method === "phone" ? <Button text={"Get one-time password"} /> : null}
+				<form className="flex flex-col mt-8 space-y-4" onSubmit={handleSubmit(onValid)}>
+					{method === "email" ? (
+						<Input
+							register={register("email", { required: true })}
+							name="email"
+							label="Email address"
+							type="email"
+							required
+						/>
+					) : null}
+					{method === "phone" ? (
+						<Input
+							register={register("phone", { required: true })}
+							name="phone"
+							label="Phone number"
+							type="number"
+							kind="phone"
+							required
+						/>
+					) : null}
+					{method === "email" ? <Button text={submitting ? "Loading..." : "Get login link"} /> : null}
+					{method === "phone" ? <Button text={submitting ? "Loading..." : "Get one-time password"} /> : null}
 				</form>
 				<div className="mt-8">
 					<div className="relative">
