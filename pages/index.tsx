@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Layout from "../components/layout";
-import FloatingButton from "../components/button/floating-button";
-import Item from "../components/item";
+import Layout from "@components/layout";
+import FloatingButton from "@components/button/floating-button";
+import Item from "@components/item";
 
 const Home: NextPage = () => {
 	const router = useRouter();

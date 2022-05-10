@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../components/button/button";
-import Input from "../components/input/input";
-import useMutation from "../libs/client/useMutations";
+import Button from "@components/button/button";
+import Input from "@components/input/input";
+import useMutation from "@libs/client/useMutations";
 
 function cls(...classnames: string[]) {
 	return classnames.join(" ");
@@ -13,7 +13,7 @@ interface EnterForm {
 	phone?: string;
 }
 export default function Enter() {
-	const [fetcher, { data, loading, error }] = useMutation("/api/users/enter");
+	const [enter, { data, loading, error }] = useMutation("/api/users/enter");
 	const [submitting, setSubmitting] = useState(false);
 	const { register, reset, handleSubmit } = useForm<EnterForm>();
 	const [method, setMethod] = useState<"email" | "phone">("email");
@@ -28,9 +28,9 @@ export default function Enter() {
 	};
 
 	const onValid = (validForm: EnterForm) => {
-		fetcher(validForm);
+		enter(validForm);
 	};
-	console.log(data, loading, error);
+
 	return (
 		<div className="mt-16 px-4">
 			<h3 className="text-3xl font-bold text-center">캐럿마켓 입장</h3>
