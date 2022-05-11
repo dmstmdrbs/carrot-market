@@ -14,7 +14,6 @@ interface EnterForm {
 }
 export default function Enter() {
 	const [enter, { data, loading, error }] = useMutation("/api/users/enter");
-	const [submitting, setSubmitting] = useState(false);
 	const { register, reset, handleSubmit } = useForm<EnterForm>();
 	const [method, setMethod] = useState<"email" | "phone">("email");
 
@@ -78,8 +77,8 @@ export default function Enter() {
 							required
 						/>
 					) : null}
-					{method === "email" ? <Button text={submitting ? "Loading..." : "Get login link"} /> : null}
-					{method === "phone" ? <Button text={submitting ? "Loading..." : "Get one-time password"} /> : null}
+					{method === "email" ? <Button text={loading ? "Loading..." : "Get login link"} /> : null}
+					{method === "phone" ? <Button text={loading ? "Loading..." : "Get one-time password"} /> : null}
 				</form>
 				<div className="mt-8">
 					<div className="relative">
