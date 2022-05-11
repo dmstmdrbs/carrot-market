@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import client from "@libs/server/client";
+import { sendMail } from "@libs/server/mailer";
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
@@ -57,12 +58,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
 		},
 	});
 	if (phone) {
-		const message = await twilioClient.messages.create({
-			messagingServiceSid: process.env.TWILIO_MESSAGE_SID,
-			to: process.env.PHONE_NUMBER!, // trial 계정이라 제한이 있음. 내 번호로 보냄, ts에서 env에 확실히 졶재하는지 모르기때문에 ! 를 뒤에 붙여 확실하다고 알려줌
-			body: `Your login token is ${payload}`,
-		});
-		console.log(message);
+		// const message = await twilioClient.messages.create({
+		// 	messagingServiceSid: process.env.TWILIO_MESSAGE_SID,
+		// 	to: process.env.PHONE_NUMBER!, // trial 계정이라 제한이 있음. 내 번호로 보냄, ts에서 env에 확실히 졶재하는지 모르기때문에 ! 를 뒤에 붙여 확실하다고 알려줌
+		// 	body: `인증 번호는 ${payload} 입니다.`,
+		// });
+		// console.log(message);
+	}
+	if (email) {
+		// const response = sendMail({
+		// 	to: "dmstmdrbs98@gmail.com",
+		// 	title: "캐럿마켓 클론코딩 인증 메일",
+		// 	text: `인증 번호는 ${payload} 입니다.`,
+		// });
+		// console.log(response);
 	}
 
 	return res.json({

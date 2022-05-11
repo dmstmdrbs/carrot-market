@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/button/button";
 import Input from "@components/input/input";
-import useMutation from "@libs/client/useMutations";
+import useMutation, { UseMutationState } from "@libs/client/useMutations";
 
 function cls(...classnames: string[]) {
 	return classnames.join(" ");
@@ -12,8 +12,13 @@ interface EnterForm {
 	email?: string;
 	phone?: string;
 }
+
+interface EnterMutationResult {
+	ok: boolean;
+}
 export default function Enter() {
-	const [enter, { data, loading, error }] = useMutation("/api/users/enter");
+	const [enter, { data, loading, error }] = useMutation<EnterMutationResult>("/api/users/enter");
+	// data :{ ok :boolean}
 	const { register, reset, handleSubmit } = useForm<EnterForm>();
 	const [method, setMethod] = useState<"email" | "phone">("email");
 
@@ -33,53 +38,57 @@ export default function Enter() {
 	return (
 		<div className="mt-16 px-4">
 			<h3 className="text-3xl font-bold text-center">캐럿마켓 입장</h3>
-			<div className="mt-8">
-				<div className="flex flex-col items-center">
-					<h5 className="text-gray-500">입장 방식</h5>
-					<div className="mt-8 grid grid-cols-2 border-b w-full">
-						<button
-							className={cls(
-								"text-sm pb-4  font-medium border-b-2",
-								method === "email" ? " border-orange-500  text-orange-400" : "border-transparent text-gray-500"
-							)}
-							onClick={onEmailClick}
-						>
-							이메일
-						</button>
-						<button
-							className={cls(
-								"text-sm pb-4  font-medium border-b-2",
-								method === "phone" ? " border-orange-500  text-orange-400" : "border-transparent text-gray-500"
-							)}
-							onClick={onPhoneClick}
-						>
-							휴대폰
-						</button>
-					</div>
-				</div>
-				<form className="flex flex-col mt-8 space-y-4" onSubmit={handleSubmit(onValid)}>
-					{method === "email" ? (
-						<Input
-							register={register("email", { required: true })}
-							name="email"
-							label="Email address"
-							type="email"
-							required
-						/>
-					) : null}
-					{method === "phone" ? (
-						<Input
-							register={register("phone", { required: true })}
-							name="phone"
-							label="Phone number"
-							type="number"
-							kind="phone"
-							required
-						/>
-					) : null}
-					{method === "email" ? <Button text={loading ? "Loading..." : "Get login link"} /> : null}
-					{method === "phone" ? <Button text={loading ? "Loading..." : "Get one-time password"} /> : null}
-				</form>
+			<div className="mt-12">
+				{data?.ok ? null : (
+					<>
+						<div className="flex flex-col items-center">
+							<h5 className="text-gray-500">입장 방식</h5>
+							<div className="mt-8 grid grid-cols-2 border-b w-full">
+								<button
+									className={cls(
+										"text-sm pb-4  font-medium border-b-2",
+										method === "email" ? " border-orange-500  text-orange-400" : "border-transparent text-gray-500"
+									)}
+									onClick={onEmailClick}
+								>
+									이메일
+								</button>
+								<button
+									className={cls(
+										"text-sm pb-4  font-medium border-b-2",
+										method === "phone" ? " border-orange-500  text-orange-400" : "border-transparent text-gray-500"
+									)}
+									onClick={onPhoneClick}
+								>
+									휴대폰
+								</button>
+							</div>
+						</div>
+						<form className="flex flex-col mt-8 space-y-4" onSubmit={handleSubmit(onValid)}>
+							{method === "email" ? (
+								<Input
+									register={register("email", { required: true })}
+									name="email"
+									label="Email address"
+									type="email"
+									required
+								/>
+							) : null}
+							{method === "phone" ? (
+								<Input
+									register={register("phone", { required: true })}
+									name="phone"
+									label="Phone number"
+									type="number"
+									kind="phone"
+									required
+								/>
+							) : null}
+							{method === "email" ? <Button text={loading ? "Loading..." : "Get login link"} /> : null}
+							{method === "phone" ? <Button text={loading ? "Loading..." : "Get one-time password"} /> : null}
+						</form>
+					</>
+				)}
 				<div className="mt-8">
 					<div className="relative">
 						<div className="absolute w-full border-t border-gray-300" />
