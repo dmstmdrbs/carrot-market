@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import FloatingButton from "../@components/button/floating-button";
-import Layout from "../@components/layout";
+import FloatingButton from "@components/button/floating-button";
+import Layout from "@components/layout";
 
 const Community: NextPage = () => {
 	const router = useRouter();

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/button/button";
 import Input from "@components/input/input";
 import useMutation, { UseMutationState } from "@libs/client/useMutations";
+import { useRouter } from "next/router";
 
 function cls(...classnames: string[]) {
 	return classnames.join(" ");
@@ -47,6 +48,12 @@ export default function Enter() {
 		confirmToken(validForm);
 	};
 
+	const router = useRouter();
+	useEffect(() => {
+		if (tokenData?.ok) {
+			router.push("/");
+		}
+	}, [tokenData, router]);
 	return (
 		<div className="mt-16 px-4">
 			<h3 className="text-3xl font-bold text-center">캐럿마켓 입장</h3>

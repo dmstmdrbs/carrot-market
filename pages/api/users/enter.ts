@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
 	//
 
 	const { phone, email } = req.body;
-	const user = phone ? { phone: +phone } : email ? { email } : null;
+	const user = phone ? { phone: phone } : email ? { email } : null;
 
 	if (!user) return res.status(400).json({ ok: false });
 	// const user = await client.user.upsert({
@@ -79,4 +79,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
 	});
 }
 
-export default withHandler("POST", handler);
+export default withHandler({
+	method: "POST",
+	handler,
+	isPrivate: false,
+});

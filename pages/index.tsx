@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import Layout from "@components/layout";
 import FloatingButton from "@components/button/floating-button";
 import Item from "@components/item";
+import useUser from "@libs/client/useUser";
 
 const Home: NextPage = () => {
 	const router = useRouter();
-
+	const user = useUser();
+	console.log("/home", user);
 	return (
 		<Layout title="홈" hasTabBar>
 			<div className="flex flex-col space-y-5 py-4">
