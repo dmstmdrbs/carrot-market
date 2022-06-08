@@ -22,10 +22,31 @@ async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     },
   });
+
+  //연관 상품을 찾기 위한 쿼리 조건
+  const terms = product?.name.split(" ").map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+  console.log("terms", terms);
+
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+  });
   console.log(product);
+  console.log("연관상품", relatedProducts);
   res.json({
     ok: true,
     product,
+    relatedProducts,
   });
 }
 
