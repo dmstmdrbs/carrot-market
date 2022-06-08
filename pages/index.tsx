@@ -7,9 +7,15 @@ import useUser from "@libs/client/useUser";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
 
+interface ProductWithFavsCount extends Product {
+  _count: {
+    favs: number;
+  };
+}
+
 interface ProductsResponse {
   ok: boolean;
-  products: Product[];
+  products: ProductWithFavsCount[];
 }
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
@@ -20,7 +26,14 @@ const Home: NextPage = () => {
     <Layout title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 py-4">
         {data?.products?.map((product) => (
-          <Item id={product.id} key={product.id} title={product.name} price={product.price} comments={1} hearts={1} />
+          <Item
+            id={product.id}
+            key={product.id}
+            title={product.name}
+            price={product.price}
+            comments={1}
+            hearts={product._count.favs}
+          />
         ))}
         <FloatingButton href="/items/upload">
           <svg

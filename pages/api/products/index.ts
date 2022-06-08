@@ -6,7 +6,16 @@ import { withApiSession } from "@libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
   if (req.method === "GET") {
-    const products = await client.product.findMany({});
+    const products = await client.product.findMany({
+      // product 모델의 relation 덕분에 favs를 알 수 있다.
+      include: {
+        _count: {
+          select: {
+            favs: true,
+          },
+        },
+      },
+    });
     res.json({
       ok: true,
       products,
